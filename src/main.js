@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { Button, Column, DataTable, InputText, InputNumber, Message, Dialog } from 'primevue';
 import { router } from './appRoutes';
+
 import './style.css'
 import App from './App.vue';
 import 'vue-toastification/dist/index.css';

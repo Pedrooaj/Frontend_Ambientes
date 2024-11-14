@@ -18,9 +18,10 @@ const router = useRouter();
 
 <style scoped>
   #nav{
+    position: absolute;
     display: flex;
     justify-content: center;
-    transform: translateY(-200%);
+    top: 50px;
     gap: 50px;
     padding: 0;
     margin: 0;

@@ -1,6 +1,6 @@
 <template>
-  <div class="card">
-    <DataTable v-if="products.length > 0" :value="products" tableStyle="min-width: 50rem">
+  <div style="overflow-y: hidden;" class="card">
+    <DataTable style="overflow-y: scroll; height: 50vh;" v-if="products.length > 0" :value="products" tableStyle="min-width: 50rem">
       <div>
         <Column field="id" header="Codigo"></Column>
         <Column field="nome" header="Nome"></Column>
@@ -19,7 +19,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column; margin-bottom: 15px;">
                   <label for="price" class="font-semibold w-24">Preço</label>
-                  <InputText id="price" v-model="editUser.preco" type="number" class="flex-auto" autocomplete="off" />
+                  <InputNumber id="price" v-model="editUser.preco" inputId="integeronly" fluid type="number" class="flex-auto" autocomplete="off" />
                 </div>
                 <div style="display: flex; gap: 15px;">
                   <Button type="button" label="Cancelar" severity="secondary" @click="visible = false"></Button>
@@ -41,6 +41,7 @@
 
 <script setup>
 import axios from 'axios';
+import { InputNumber } from 'primevue';
 import { onBeforeMount, ref, watch } from 'vue';
 import { useToast } from 'vue-toastification';
 
@@ -54,7 +55,7 @@ const products = ref([]);
 // função responsavel por editar o produto na api
 async function handleEdit() {
   try {
-    await axios.put(`http://localhost:3000/${editUser.value.id}`, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/${editUser.value.id}`, {
       nome: editUser.value.nome,
       preco: editUser.value.preco
     });
@@ -78,7 +79,7 @@ function openModal(product) {
 // função responsavel por recuperar a lista de produtos da api
 async function fetchProducts() {
   try {
-    const res = await axios.get("http://localhost:3000");
+    const res = await axios.get(import.meta.env.VITE_API_URL);
     products.value = res.data.products;
   } catch (error) {
     toast.error("Erro ao buscar produtos", { position: 'bottom-left' })
@@ -88,7 +89,7 @@ async function fetchProducts() {
 // Função responsavel por deletar o produto
 async function handleDelete(id) {
   try {
-    await axios.delete(`http://localhost:3000/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/${id}`);
     toast.success("Produto deletado com sucesso!", { position: 'bottom-left' });
     action.value++;
   } catch (error) {

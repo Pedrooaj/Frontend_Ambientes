@@ -8,7 +8,7 @@
         </div>
         <div id="Input">
             <label for="username">Preço</label>
-            <InputText id="price" v-model="produto.preco" type="number" />
+            <InputNumber id="price" v-model="produto.preco" type="number" inputId="integeronly" fluid />
         </div>
         <Button @click="createProduct()" style="width: 45%; margin: 0 auto;"><span class="pi pi-cart-plus"></span>Adicionar Produto</Button>
     </form>
@@ -18,9 +18,10 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
 
 const toast = useToast();
-
+const route = useRouter()
 const produto = ref({ nome: '', preco: '' });
 
 async function createProduct() {
@@ -30,11 +31,12 @@ async function createProduct() {
             return;
         }
 
-        await axios.post("http://localhost:3000", {
+        await axios.post(import.meta.env.VITE_API_URL, {
             nome: produto.value.nome,
             preco: produto.value.preco
         });
         toast.success("Produto criado com sucesso!", { position: "bottom-left" });
+        route.push("/");
         return;
         
     } catch (error) {
